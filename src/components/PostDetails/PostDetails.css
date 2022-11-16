@@ -1,0 +1,19 @@
+.postDetails {
+   border: 5px solid peru;
+   margin: 20px;
+   padding: 10px;
+   border-radius: 15px;
+   background-color: bisque;
+}
+
+.postDetails button {
+   padding: 8px 5px;
+   border-radius: 15px;
+   background-color: brown;
+   color: white;
+}
+
+.postDetails button:hover {
+   background-color: aquamarine;
+   color: black;
+}

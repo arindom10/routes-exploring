@@ -1,25 +1,78 @@
-import logo from './logo.svg';
-import './App.css';
+import logo from "./logo.svg";
+import "./App.css";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import Home from "./components/Home/Home";
+import About from "./components/About/About";
+import Products from "./components/Products/Products";
+import Main from "./Layout/Main";
+import Friends from "./components/Friends/Friends";
+import FriendDetails from "./components/FriendDetails/FriendDetails";
+import Posts from "./components/Posts/Posts";
+import PostDetails from "./components/PostDetails/PostDetails";
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    const router = createBrowserRouter([
+        {
+            path: "/",
+            element: <Main></Main>,
+            children: [
+                { path: "/", element: <Home></Home> },
+                { path: "/home", element: <Home></Home> },
+                { path: "/products", element: <Products></Products> },
+                {
+                    path: "/friends",
+                    loader: async () => {
+                        return fetch(
+                            "https://jsonplaceholder.typicode.com/users"
+                        );
+                    },
+                    element: <Friends></Friends>,
+                },
+                {
+                    path: "/friend/:friendId",
+                    loader: async ({ params }) => {
+                        return fetch(
+                            `https://jsonplaceholder.typicode.com/users/${params.friendId}`
+                        );
+                    },
+                    element: <FriendDetails></FriendDetails>,
+                },
+                {
+                    path: "/posts",
+                    loader: async () => {
+                        return fetch(
+                            "https://jsonplaceholder.typicode.com/posts"
+                        );
+                    },
+                    element: <Posts></Posts>,
+                },
+                {
+                    path: "/post/:postId",
+                    loader: async ({ params }) => {
+                        return fetch(
+                            `https://jsonplaceholder.typicode.com/posts/${params.postId}`
+                        );
+                    },
+                    element: <PostDetails></PostDetails>,
+                },
+            ],
+        },
+        { path: "/about", element: <About></About> },
+        {
+            path: "*",
+            element: (
+                <div>
+                    <h1>404 Not Found</h1>
+                    <h1>This Routes Not Found</h1>
+                </div>
+            ),
+        },
+    ]);
+    return (
+        <div className="App">
+            <RouterProvider router={router}></RouterProvider>
+        </div>
+    );
 }
 
 export default App;
